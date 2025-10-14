@@ -1,0 +1,732 @@
+/* ==========================================================================
+   1. VARIÁVEIS GLOBAIS E TEMAS
+   ========================================================================== */
+
+:root {
+    /* Cores de Fundo e Texto */
+    --background-dark: #0f172a;
+    --background-light: #1e293b;
+    --text-primary: #e2e8f0;
+    --text-secondary: #94a3b8;
+
+    /* Estilos "Glass" */
+    --glass-bg: rgba(30, 41, 59, 0.7);
+    --glass-bg-light: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+
+    /* Cores de Status */
+    --status-aprovado: #2ecc71;
+    --status-reprovado: #e74c3c;
+    --status-entregue: #ffffff;
+    --status-ressalva: #e67e22;
+    --status-analise: #3498db;
+
+    /* Cores de Papéis (Roles) */
+    --role-aluno: #3498db;
+    --role-coord: #9b59b6;
+    --role-secret: #e67e22;
+    --role-admin: #e74c3c;
+}
+
+/* Tema Padrão (Aluno, Coordenador, Secretaria, Login) */
+.theme-default {
+    --primary-glow: #00aaff;
+    --primary-glow-transparent: rgba(0, 170, 255, 0.1);
+    --primary-gradient: linear-gradient(45deg, var(--primary-glow), #8e44ad);
+}
+
+/* Tema Administrador */
+.theme-admin {
+    --primary-glow: #e74c3c;
+    --primary-glow-transparent: rgba(231, 76, 60, 0.1);
+    --primary-gradient: linear-gradient(45deg, var(--primary-glow), #f39c12);
+}
+
+/* ==========================================================================
+   2. ESTILOS DE BASE E LAYOUT
+   ========================================================================== */
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+}
+
+.dotted-background {
+    background-image: radial-gradient(circle at 1% 1%, var(--background-light) 1px, transparent 1px),
+                      radial-gradient(circle at 99% 99%, var(--background-light) 1px, transparent 1px);
+}
+
+.main-container,
+.dashboard-container,
+.login-card { /* Adicionado para a página de login */
+    width: 100%;
+    margin: 30px auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.login-card {
+    max-width: 480px; /* <-- Altere este valor como desejar */
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 40px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+    overflow: hidden;
+}
+
+.main-container { max-width: 1600px; }
+.dashboard-container { max-width: 1200px; }
+.form-container { max-width: 800px; }
+.profile-container { max-width: 700px; }
+
+/* Adicionado para a página de login */
+.form-wrapper {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.form-wrapper.hidden {
+    opacity: 0;
+    transform: scale(0.95);
+    display: none;
+}
+.logo-header {
+    font-size: 2em;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+.logo-header span {
+    font-weight: 300;
+    color: var(--primary-glow);
+}
+.login-title {
+    font-size: 1.2em;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+}
+.input-wrapper {
+    position: relative;
+}
+.input-wrapper i.prefix-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+}
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+.btn-full {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+    background-color: var(--primary-glow);
+    color: #fff;
+    margin-top: 10px;
+}
+.btn-full:hover {
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+.link-action {
+    display: block;
+    margin-top: 20px;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.9em;
+    cursor: pointer;
+}
+.link-action:hover {
+    color: var(--primary-glow);
+    text-decoration: underline;
+}
+.confirmation-message {
+    text-align: center;
+}
+.confirmation-message i {
+    font-size: 3em;
+    color: var(--primary-glow);
+    margin-bottom: 20px;
+}
+/* Fim dos estilos de login */
+
+/* ==========================================================================
+   3. CABEÇALHO (HEADER)
+   ========================================================================== */
+
+.header {
+    padding: 20px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--glass-border);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.header .logo {
+    font-weight: 600;
+    font-size: 1.5em;
+}
+
+.header .logout-btn {
+    text-decoration: none;
+    color: var(--text-secondary);
+    transition: color 0.3s ease;
+}
+
+.header .logout-btn:hover {
+    color: var(--primary-glow);
+}
+
+.logout-btn i {
+    margin-right: 8px;
+}
+
+/* ==========================================================================
+   4. TÍTULOS E CABEÇALHOS DE PÁGINA
+   ========================================================================== */
+
+.page-title,
+.dashboard-title {
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.page-title {
+    display: flex;
+    align-items: center;
+    font-size: 2.2em;
+    margin-top: 0;
+}
+
+.page-title i {
+    margin-right: 15px;
+    color: var(--primary-glow);
+}
+
+.dashboard-title {
+    text-align: center;
+    font-size: 2.5em;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* ==========================================================================
+   5. BOTÕES E LINKS
+   ========================================================================== */
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary { background-color: var(--primary-glow); color: #fff; }
+.btn-primary:hover { box-shadow: 0 0 15px var(--primary-glow); }
+
+.btn-secondary { background-color: var(--background-light); color: var(--text-secondary); }
+.btn-secondary:hover { background-color: var(--glass-border); }
+
+.btn-success { background-color: var(--status-aprovado); color: #fff; }
+.btn-danger { background-color: var(--status-reprovado); color: #fff; }
+.btn-warning { background-color: var(--status-ressalva); color: #fff; }
+
+.action-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 1.2em;
+    margin: 0 8px;
+    transition: color 0.3s ease;
+}
+.action-btn:hover { color: var(--primary-glow); }
+.action-btn.delete:hover { color: var(--status-reprovado); }
+
+
+/* ==========================================================================
+   6. FILTROS E FORMULÁRIOS
+   ========================================================================== */
+
+.filter-bar, .form-card, .settings-card {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.filter-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    align-items: center;
+}
+
+.filter-group, .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.filter-group label, .form-group label {
+    font-size: 0.9em;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+}
+
+.filter-group input, .filter-group select,
+.form-group input, .form-group select,
+.form-group textarea {
+    width: 100%;
+    background-color: var(--background-light);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    color: var(--text-primary);
+    padding: 12px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+/* Adicionado para padding em inputs com ícone */
+.form-group input {
+    padding-left: 45px;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+    align-self: flex-end;
+}
+
+/* ==========================================================================
+   7. TABELAS
+   ========================================================================== */
+
+.table-container {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    white-space: nowrap;
+}
+
+th, td {
+    padding: 15px 20px;
+    vertical-align: middle;
+}
+
+th {
+    background-color: var(--primary-glow-transparent);
+    font-weight: 600;
+}
+
+tr {
+    border-bottom: 1px solid var(--glass-border);
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: var(--primary-glow-transparent);
+}
+
+.action-cell { text-align: right; }
+.details-cell { white-space: normal; max-width: 400px; }
+
+/* ==========================================================================
+   8. COMPONENTES ESPECÍFICOS (CARDS, MODAIS, ACORDEÃO)
+   ========================================================================== */
+
+/* --- Dashboards --- */
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.option-card {
+    background: var(--glass-bg-light);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+    animation: fadeInUp 0.5s ease-out forwards;
+    opacity: 0;
+}
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.option-card:nth-child(1) { animation-delay: 0.1s; }
+.option-card:nth-child(2) { animation-delay: 0.2s; }
+.option-card:nth-child(3) { animation-delay: 0.3s; }
+.option-card:nth-child(4) { animation-delay: 0.4s; }
+
+.option-card:hover {
+    transform: translateY(-10px);
+    border-color: var(--primary-glow);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--primary-glow) 30%, transparent);
+}
+
+.option-card .icon {
+    font-size: 4em;
+    margin-bottom: 20px;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.option-card h3 { margin: 10px 0 5px 0; font-size: 1.5em; font-weight: 600; }
+.option-card p { margin: 0; font-size: 0.9em; color: var(--text-secondary); }
+
+/* --- Acordeão --- */
+.accordion-item {
+    margin-bottom: 15px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+.accordion-header {
+    width: 100%; background: none; border: none; padding: 20px;
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; color: var(--text-primary); text-align: left;
+}
+.accordion-header:hover { background-color: var(--primary-glow-transparent); }
+.accordion-header.active .accordion-icon { transform: rotate(180deg); }
+.accordion-icon { transition: transform 0.4s ease; }
+.accordion-content {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.5s ease-out;
+    background-color: rgba(15, 23, 42, 0.5); padding: 0 20px;
+}
+.content-wrapper { padding: 20px 0; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+.details-list .detail-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--glass-border); }
+.pdf-preview { width: 100%; height: 400px; border-radius: 8px; border: 1px solid var(--glass-border); }
+
+/* --- Modais (Dialog) --- */
+dialog {
+    max-width: 600px; background: var(--glass-bg); border: 1px solid var(--glass-border);
+    color: var(--text-primary); border-radius: 16px; padding: 30px;
+}
+dialog::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); }
+.modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.modal-title { font-size: 1.5em; font-weight: 600; }
+.close-btn { background: none; border: none; color: var(--text-secondary); font-size: 1.5em; cursor: pointer; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.form-group.full-width { grid-column: 1 / -1; }
+.form-group.hidden { display: none; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; }
+
+/* --- Badges de Status e Papéis --- */
+.status, .role-badge { padding: 5px 12px; border-radius: 12px; font-weight: 600; font-size: 0.8em; }
+.status-aprovado { background-color: var(--status-aprovado); color: #fff; }
+.status-reprovado { background-color: var(--status-reprovado); color: #fff; }
+.status-entregue { background-color: var(--status-entregue); color: #333; }
+.status-ressalva { background-color: var(--status-ressalva); color: #fff; }
+.status-analise { background-color: var(--status-analise); color: #fff; }
+
+.role-aluno { background-color: var(--role-aluno); color: #fff; }
+.role-coord { background-color: var(--role-coord); color: #fff; }
+.role-secret { background-color: var(--role-secret); color: #fff; }
+.role-admin { background-color: var(--role-admin); color: #fff; }
+
+/* ==========================================================================
+   9. MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 768px) {
+    .content-wrapper, .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==========================================================================
+   10. CLASSES DE LAYOUT
+   ========================================================================== */
+
+/* Layout para a página de login */
+.layout-login {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Layout para páginas com um card principal centralizado (ex: Perfis) */
+.layout-centered-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.layout-centered-card > .main-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+/* ==========================================================================
+   11. PERFIS (Aluno, Coordenador, Secretaria, Administrador)
+   ========================================================================== */
+
+.profile-card {
+    width: 100%;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 40px;
+    backdrop-filter: blur(10px);
+    text-align: center;
+}
+
+.profile-avatar-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px auto;
+    border-radius: 50%;
+    background-color: var(--background-light);
+    border: 3px solid var(--glass-border);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+#profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+#default-avatar-icon {
+    font-size: 4em;
+    color: var(--primary-glow);
+}
+.profile-avatar-wrapper.has-photo #default-avatar-icon { display: none; }
+.profile-avatar-wrapper:not(.has-photo) #profile-avatar { display: none; }
+
+.avatar-edit-overlay {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.5em;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.profile-avatar-wrapper:hover .avatar-edit-overlay { opacity: 1; }
+
+#avatar-input { display: none; }
+
+.avatar-menu {
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--background-light);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    overflow: hidden;
+    display: none;
+    z-index: 20;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+.avatar-menu button {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    cursor: pointer;
+    text-align: left;
+    white-space: nowrap;
+}
+.avatar-menu button:last-child { border-bottom: none; }
+.avatar-menu button:hover { background-color: var(--primary-glow); }
+.avatar-menu button i { margin-right: 10px; width: 1.2em; }
+
+.profile-name { font-size: 2em; font-weight: 600; margin: 0; }
+.profile-email { font-size: 1em; color: var(--text-secondary); margin: 5px 0 30px 0; }
+
+.profile-details {
+    text-align: left;
+    margin-bottom: 30px;
+}
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid var(--glass-border);
+}
+.detail-item:last-child { border-bottom: none; }
+.detail-item .label { color: var(--text-secondary); }
+.detail-item .value { font-weight: 600; }
+
+.summary-section {
+    text-align: left;
+    margin-bottom: 30px;
+}
+.summary-section h3 {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: 0 0 15px 0;
+    border-top: 1px solid var(--glass-border);
+    padding-top: 30px;
+}
+.summary-stats {
+    display: flex;
+    gap: 15px;
+    justify-content: space-around;
+}
+.stat-card {
+    background-color: var(--background-light);
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    flex-grow: 1;
+}
+.stat-card .value {
+    font-size: 1.8em;
+    font-weight: 600;
+    color: var(--primary-glow);
+}
+.stat-card .label {
+    font-size: 0.8em;
+    color: var(--text-secondary);
+}
+
+.progress-section {
+    text-align: left;
+    margin-bottom: 30px;
+}
+.progress-section > h3 {
+    font-size: 1.1em;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin: 0 0 15px 0;
+}
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background-color: var(--background-light);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+}
+.progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary-glow), #3498db);
+    border-radius: 10px;
+}
+.progress-label {
+    text-align: right;
+    margin-top: 5px;
+    font-size: 0.9em;
+    color: var(--text-secondary);
+}
+.progress-breakdown {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+.area-progress .area-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+}
+.mini-progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: var(--background-light);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.mini-progress-bar-fill {
+    height: 100%;
+    background-color: var(--primary-glow);
+    border-radius: 4px;
+}
+
+/* Modal de Senha */
+.password-modal {
+    max-width: 500px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    color: var(--text-primary);
+    border-radius: 16px;
+    padding: 30px;
+}
+.password-modal::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.modal-title {
+    font-size: 1.5em;
+    font-weight: 600;
+}
+.close-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.5em;
+    cursor: pointer;
+}
