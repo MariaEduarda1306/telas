@@ -731,178 +731,133 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); }
     cursor: pointer;
 }
 
-/* ==========================================================================
-   12. MEDIA QUERIES ABRANGENTES PARA RESPONSIVIDADE
-   ========================================================================== */
+/* ===============================
+   RESPONSIVIDADE GLOBAL
+   =============================== */
 
-/* ======= Para Tablets e Desktops Menores (telas até 1024px) ======= */
+/* Tablets e Notebooks pequenos (≤1024px) */
 @media (max-width: 1024px) {
-    .header {
-        padding: 15px 20px; /* Reduz o espaçamento do cabeçalho */
-    }
+  .header {
+    padding: 15px 20px;
+  }
 
-    .header .logo {
-        font-size: 1.2em; /* Diminui a fonte do logo */
-    }
+  .main-container,
+  .dashboard-container {
+    margin: 20px auto;
+    padding: 15px;
+  }
 
-    .main-container,
-    .dashboard-container {
-        margin: 20px auto; /* Reduz a margem em telas menores */
-        padding: 15px;
-    }
+  .options-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
 
-    .options-grid {
-        /* Passa de 3 para 2 colunas em tablets */
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 20px;
-    }
+  .page-title,
+  .dashboard-title {
+    font-size: 2em;
+  }
 
-    .page-title,
-    .dashboard-title {
-        font-size: 2em; /* Reduz o tamanho dos títulos principais */
-    }
-    
-    .filter-bar {
-        /* Garante que os filtros fiquem bem distribuídos */
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    }
+  .filter-bar {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
 
-    .content-wrapper {
-        /* Em histórico/validação, coloca os detalhes e o PDF um sobre o outro */
-        grid-template-columns: 1fr;
-    }
-
-    .settings-grid {
-        /* Coloca os cards de configuração em uma única coluna */
-        grid-template-columns: 1fr;
-    }
-
-    .profile-card {
-        padding: 30px; /* Reduz o padding dos cards de perfil */
-    }
+  .profile-card {
+    padding: 30px;
+  }
 }
 
-/* =================== Para Celulares (telas até 768px) =================== */
+/* Tablets e Celulares grandes (≤768px) */
 @media (max-width: 768px) {
-    /* --- Layout Geral e Cabeçalho --- */
-    .header {
-        flex-direction: column; /* Empilha os itens do cabeçalho */
-        gap: 12px;
-        padding: 15px;
-    }
-    
-    /* Esconde o texto dos botões de voltar/sair, mostrando só o ícone */
-    .header .logout-btn {
-        font-size: 0; /* Esconde o texto */
-    }
-    .header .logout-btn i {
-        font-size: 1.3rem; /* Garante que o ícone fique visível */
-        margin-right: 0;
-    }
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+  }
 
-    .page-header {
-        flex-direction: column; /* Empilha o título e o botão "Adicionar" */
-        align-items: stretch; /* Faz os itens ocuparem a largura total */
-        gap: 15px;
-    }
-    
-    .page-title { font-size: 1.6em; }
-    .dashboard-title { font-size: 1.8em; }
+  .header .logout-btn {
+    font-size: 0;
+  }
+  .header .logout-btn i {
+    font-size: 1.3rem;
+    margin-right: 0;
+  }
 
-    /* --- Página de Login --- */
-    .login-card {
-        width: 90%;
-        padding: 25px; /* Reduz o padding do card de login */
-        margin: 15px;
-        border: none; /* Remove a borda em telas muito pequenas */
-    }
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
 
-    /* --- Dashboards --- */
-    .options-grid {
-        grid-template-columns: 1fr; /* Garante 1 coluna para os cards */
-    }
-    .option-card {
-        padding: 25px;
-    }
-    .option-card .icon {
-        font-size: 3em;
-    }
-    .option-card h3 {
-        font-size: 1.3em;
-    }
+  .page-title { font-size: 1.6em; }
+  .dashboard-title { font-size: 1.8em; }
 
-    /* --- Filtros e Formulários --- */
-    .filter-bar {
-        grid-template-columns: 1fr; /* Filtros em 1 coluna */
-    }
-    
-    .filter-buttons {
-        flex-direction: column; /* Botões de filtrar/limpar em coluna */
-        gap: 10px;
-    }
+  .options-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .btn {
-        width: 100%; /* Botões ocupam a largura toda no contexto de filtros e modais */
-    }
+  .filter-bar {
+    grid-template-columns: 1fr;
+  }
 
-    .form-actions {
-        display: flex;
-        flex-direction: column-reverse; /* Empilha botões de formulário */
-        gap: 10px;
-    }
+  .filter-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
 
-    /* --- Tabelas --- */
-    .table-container {
-        /* Permite que a tabela role horizontalmente sem quebrar o layout */
-        border: none;
-        background: transparent;
-    }
-    th, td {
-        padding: 12px 10px; /* Menos espaçamento nas células */
-    }
+  .btn {
+    width: 100%;
+  }
 
-    /* --- Modais --- */
-    dialog {
-        width: 90vw; /* Modal ocupa 90% da largura da tela */
-        padding: 20px;
-    }
-    .form-grid {
-        grid-template-columns: 1fr; /* Formulários nos modais com 1 coluna */
-    }
-    .modal-footer {
-        flex-direction: column-reverse; /* Botões do modal em coluna */
-        gap: 10px;
-    }
-    .modal-footer .btn {
-        width: 100%;
-    }
+  dialog {
+    width: 90vw;
+    padding: 20px;
+  }
 
-    /* --- Perfis --- */
-    .profile-card {
-        padding: 20px;
-    }
-    .profile-avatar-wrapper {
-        width: 100px;
-        height: 100px;
-    }
-    .profile-name { font-size: 1.5em; }
-    .profile-email { font-size: 0.9em; }
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
 
-    .summary-stats {
-        flex-direction: column; /* Cards de estatísticas do perfil em coluna */
-    }
+  .modal-footer {
+    flex-direction: column-reverse;
+    gap: 10px;
+  }
 
-    /* --- Acordeão --- */
-    .accordion-header {
-        padding: 15px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-    }
-    .accordion-header .header-status {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+  .profile-card {
+    padding: 20px;
+  }
+
+  .summary-stats {
+    flex-direction: column;
+  }
+}
+
+/* Celulares pequenos (≤480px) */
+@media (max-width: 480px) {
+  .login-card {
+    width: 90%;
+    padding: 20px;
+    margin: 10px;
+  }
+
+  .option-card {
+    padding: 20px;
+  }
+
+  .option-card .icon {
+    font-size: 2.5em;
+  }
+
+  th, td {
+    padding: 10px;
+    font-size: 0.85em;
+  }
+
+  .profile-name {
+    font-size: 1.3em;
+  }
+
+  .btn {
+    font-size: 1em;
+    padding: 12px;
+  }
 }
