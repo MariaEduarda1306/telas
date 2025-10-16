@@ -732,10 +732,10 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); }
 }
 
 /* ==========================================================================
-   12. MEDIA QUERIES PARA RESPONSIVIDADE
+   12. MEDIA QUERIES ABRANGENTES PARA RESPONSIVIDADE
    ========================================================================== */
 
-/* Para Tablets (telas até 1024px de largura) */
+/* ======= Para Tablets e Desktops Menores (telas até 1024px) ======= */
 @media (max-width: 1024px) {
     .header {
         padding: 15px 20px; /* Reduz o espaçamento do cabeçalho */
@@ -759,8 +759,7 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); }
 
     .page-title,
     .dashboard-title {
-        font-size: 1.8em; /* Reduz o tamanho dos títulos principais */
-        margin-bottom: 25px;
+        font-size: 2em; /* Reduz o tamanho dos títulos principais */
     }
     
     .filter-bar {
@@ -777,79 +776,133 @@ dialog::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); }
         /* Coloca os cards de configuração em uma única coluna */
         grid-template-columns: 1fr;
     }
+
+    .profile-card {
+        padding: 30px; /* Reduz o padding dos cards de perfil */
+    }
 }
 
-/* Para Celulares (telas até 767px de largura) */
-@media (max-width: 767px) {
+/* =================== Para Celulares (telas até 768px) =================== */
+@media (max-width: 768px) {
+    /* --- Layout Geral e Cabeçalho --- */
     .header {
         flex-direction: column; /* Empilha os itens do cabeçalho */
-        gap: 10px;
+        gap: 12px;
         padding: 15px;
     }
     
     /* Esconde o texto dos botões de voltar/sair, mostrando só o ícone */
-    .logout-btn {
+    .header .logout-btn {
         font-size: 0; /* Esconde o texto */
     }
-    .logout-btn i {
-        font-size: 1.2rem; /* Garante que o ícone fique visível */
+    .header .logout-btn i {
+        font-size: 1.3rem; /* Garante que o ícone fique visível */
         margin-right: 0;
     }
 
+    .page-header {
+        flex-direction: column; /* Empilha o título e o botão "Adicionar" */
+        align-items: stretch; /* Faz os itens ocuparem a largura total */
+        gap: 15px;
+    }
+    
+    .page-title { font-size: 1.6em; }
+    .dashboard-title { font-size: 1.8em; }
+
+    /* --- Página de Login --- */
     .login-card {
+        width: 90%;
         padding: 25px; /* Reduz o padding do card de login */
         margin: 15px;
         border: none; /* Remove a borda em telas muito pequenas */
     }
 
-    .page-header {
-        flex-direction: column; /* Empilha o título e o botão "Adicionar" */
-        align-items: flex-start;
-        gap: 15px;
-    }
-
-    .page-title {
-        font-size: 1.5em;
-    }
-    .dashboard-title {
-        font-size: 1.6em;
-    }
-
+    /* --- Dashboards --- */
     .options-grid {
-        /* Garante que os cards do dashboard ocupem uma única coluna */
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Garante 1 coluna para os cards */
     }
-    
+    .option-card {
+        padding: 25px;
+    }
+    .option-card .icon {
+        font-size: 3em;
+    }
+    .option-card h3 {
+        font-size: 1.3em;
+    }
+
+    /* --- Filtros e Formulários --- */
     .filter-bar {
-        /* Filtros passam a ocupar uma única coluna */
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Filtros em 1 coluna */
     }
     
     .filter-buttons {
-        flex-direction: column; /* Botões de filtrar e limpar ficam em coluna */
-    }
-    .btn {
-        width: 100%; /* Botões ocupam a largura toda */
+        flex-direction: column; /* Botões de filtrar/limpar em coluna */
+        gap: 10px;
     }
 
+    .btn {
+        width: 100%; /* Botões ocupam a largura toda no contexto de filtros e modais */
+    }
+
+    .form-actions {
+        display: flex;
+        flex-direction: column-reverse; /* Empilha botões de formulário */
+        gap: 10px;
+    }
+
+    /* --- Tabelas --- */
     .table-container {
         /* Permite que a tabela role horizontalmente sem quebrar o layout */
-        overflow-x: auto;
+        border: none;
+        background: transparent;
     }
     th, td {
-        padding: 12px 15px; /* Menos espaçamento nas células da tabela */
+        padding: 12px 10px; /* Menos espaçamento nas células */
     }
 
+    /* --- Modais --- */
+    dialog {
+        width: 90vw; /* Modal ocupa 90% da largura da tela */
+        padding: 20px;
+    }
     .form-grid {
-        /* Formulários em modais ficam com uma coluna só */
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Formulários nos modais com 1 coluna */
     }
-
     .modal-footer {
         flex-direction: column-reverse; /* Botões do modal em coluna */
+        gap: 10px;
+    }
+    .modal-footer .btn {
+        width: 100%;
     }
 
+    /* --- Perfis --- */
+    .profile-card {
+        padding: 20px;
+    }
+    .profile-avatar-wrapper {
+        width: 100px;
+        height: 100px;
+    }
+    .profile-name { font-size: 1.5em; }
+    .profile-email { font-size: 0.9em; }
+
     .summary-stats {
-        flex-direction: column; /* Cards de estatísticas do perfil ficam em coluna */
+        flex-direction: column; /* Cards de estatísticas do perfil em coluna */
+    }
+
+    /* --- Acordeão --- */
+    .accordion-header {
+        padding: 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .accordion-header .header-status {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 }
