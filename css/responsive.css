@@ -205,3 +205,57 @@
     margin: 2rem auto;
   }
 }
+
+/* Ajustes extras para celular (até 600px) */
+@media (max-width: 600px) {
+  .profile-card {
+    padding: 1rem !important;
+    margin: 0.5rem 0 !important;
+    width: 100% !important;
+    max-width: 99vw !important;
+    border-radius: 1.2rem !important;
+    box-sizing: border-box !important;
+  }
+  .profile-avatar-wrapper {
+    width: 80px !important;
+    height: 80px !important;
+    margin: 0 auto 1rem auto !important;
+  }
+  #profile-avatar,
+  .profile-avatar-wrapper i {
+    width: 80px !important;
+    height: 80px !important;
+    font-size: 3.5rem !important;
+  }
+  .profile-name {
+    font-size: 1.3rem !important;
+    margin: 0.5rem 0 !important;
+    word-break: break-word !important;
+  }
+  .profile-email {
+    font-size: 1rem !important;
+    word-break: break-word !important;
+  }
+  .profile-details, 
+  .summary-section, 
+  .progress-section {
+    margin-bottom: 1.2rem !important;
+    padding: 0 !important;
+  }
+  .detail-item, .summary-stats .stat-card, .progress-breakdown {
+    font-size: 1rem !important;
+    gap: 0.5rem !important;
+  }
+  .progress-bar, .mini-progress-bar {
+    height: 0.8rem !important;
+    border-radius: 0.5rem !important;
+  }
+  .alterar-senha, .btn, .btn-full {
+    font-size: 1rem !important;
+    padding: 0.9rem 1.2rem !important;
+  }
+  body, html {
+    font-size: 13px !important;
+  }
+}
+
