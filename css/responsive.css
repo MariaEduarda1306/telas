@@ -92,4 +92,8 @@
         padding: 4rem;
     }
 
+    .profile-card {
+        max-width: 800px;
+        margin: 4rem auto;
+    }
 }
