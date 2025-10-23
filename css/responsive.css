@@ -2,31 +2,6 @@
    responsive.css: Media queries para a adaptação em diferentes telas.
    ========================================================================== */
 
-/* TELAS MUITO PEQUENAS (ex: smartphones na vertical) */
-@media (max-width: 599px) {
-    .profile-card {
-        padding: 2rem; /* Reduz o padding em telas muito pequenas */
-    }
-    .detail-item {
-        flex-direction: column; /* Empilha os itens de detalhe */
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
-    .detail-item .value {
-        text-align: left;
-    }
-    .main-container {
-        padding: 1.5rem;
-    }
-    .header .logo {
-        font-size: 1.6rem;
-        text-align: center;
-    }
-    .header .logout-btn {
-        white-space: normal;
-    }
-}
-
 /* TABLETS E TELAS MENORES (ex: iPads na vertical) */
 @media (min-width: 600px) {
     .page-header {
@@ -117,8 +92,4 @@
         padding: 4rem;
     }
 
-    .profile-card {
-        max-width: 800px;
-        margin: 4rem auto;
-    }
 }

@@ -15,6 +15,7 @@
    
    .dashboard-container { max-width: 1200px; }
    .form-container { max-width: 800px; }
+   .profile-container { max-width: 700px; }
    
    .page-header {
        display: flex;
