@@ -18,6 +18,13 @@
     .main-container {
         padding: 1.5rem;
     }
+    .header .logo {
+        font-size: 1.6rem;
+        text-align: center;
+    }
+    .header .logout-btn {
+        white-space: normal;
+    }
 }
 
 /* TABLETS E TELAS MENORES (ex: iPads na vertical) */
