@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemas de Horas Compementares - SHC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="theme-default">
+
+    <header class="header">
+        <a href="dashboard alunos.html" class="logout-btn"><i class="fas fa-chevron-circle-left"></i> Voltar</a>        
+        <div class="logo">SHC</div>
+        <a href="index.html" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </header>
+
+    <main class="main-container">
+        <h1 class="page-title"><i class="fas fa-history"></i>Meu Histórico de Atividades</h1>
+
+        <div class="accordion-container">
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        <h3>Semana Acadêmica de TI</h3>
+                        <p>ID do Requerimento: 2025001</p>
+                    </div>
+                    <div class="header-status">
+                        <span class="status status-aprovado">Aprovado</span>
+                        <i class="fas fa-chevron-down accordion-icon"></i>
+                    </div>
+                </button>
+                <div class="accordion-content">
+                    <div class="content-wrapper">
+                        <div class="details-list">
+                            <div class="detail-item"><span>Data de Envio:</span> <span>01/10/2025</span></div>
+                            <div class="detail-item"><span>Categoria:</span> <span>Acadêmico</span></div>
+                            <div class="detail-item"><span>Horas Solicitadas:</span> <span>20</span></div>
+                            <div class="detail-item"><span>Horas Aprovadas:</span> <span>20</span></div>
+                            <div class="detail-item"><span>Observação:</span> <span>--</span></div>
+                        </div>
+                        <div class="preview-section">
+                            <h4>Pré-visualização do Comprovante</h4>
+                            <embed class="pdf-preview" src="" type="application/pdf" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        <h3>Palestra sobre Inteligência Artificial</h3>
+                        <p>ID do Requerimento: 2025002</p>
+                    </div>
+                    <div class="header-status">
+                        <span class="status status-reprovado">Reprovado</span>
+                        <i class="fas fa-chevron-down accordion-icon"></i>
+                    </div>
+                </button>
+                <div class="accordion-content">
+                     <div class="content-wrapper">
+                        <div class="details-list">
+                            <div class="detail-item"><span>Data de Envio:</span> <span>30/09/2025</span></div>
+                            <div class="detail-item"><span>Categoria:</span> <span>Acadêmico</span></div>
+                            <div class="detail-item"><span>Horas Solicitadas:</span> <span>4</span></div>
+                            <div class="detail-item"><span>Horas Aprovadas:</span> <span>0</span></div>
+                            <div class="detail-item"><span>Observação:</span> <span>Certificado sem data.</span></div>
+                        </div>
+                        <div class="preview-section">
+                            <h4>Pré-visualização do Comprovante</h4>
+                            <embed class="pdf-preview" src="" type="application/pdf" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <button class="accordion-header">
+                    <div class="header-title">
+                        <h3>Oficina de Docker</h3>
+                        <p>ID do Requerimento: 2025003</p>
+                    </div>
+                    <div class="header-status">
+                        <span class="status status-analise">Em Análise</span>
+                        <i class="fas fa-chevron-down accordion-icon"></i>
+                    </div>
+                </button>
+                <div class="accordion-content">
+                    <div class="content-wrapper">
+                        <div class="details-list">
+                             <div class="detail-item"><span>Data de Envio:</span> <span>28/09/2025</span></div>
+                            <div class="detail-item"><span>Categoria:</span> <span>Profissional</span></div>
+                            <div class="detail-item"><span>Horas Solicitadas:</span> <span>10</span></div>
+                            <div class="detail-item"><span>Horas Aprovadas:</span> <span>--</span></div>
+                            <div class="detail-item"><span>Observação:</span> <span>Aguardando validação.</span></div>
+                        </div>
+                        <div class="preview-section">
+                            <h4>Pré-visualização do Comprovante</h4>
+                            <embed class="pdf-preview" src="" type="application/pdf" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // JavaScript para controlar a funcionalidade do acordeão
+        document.addEventListener('DOMContentLoaded', () => {
+            const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+            accordionHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    // Fecha todos os outros itens abertos (opcional)
+                    accordionHeaders.forEach(otherHeader => {
+                        if (otherHeader !== header && otherHeader.classList.contains('active')) {
+                            otherHeader.classList.remove('active');
+                            otherHeader.nextElementSibling.style.maxHeight = null;
+                        }
+                    });
+
+                    // Abre ou fecha o item clicado
+                    header.classList.toggle('active');
+                    const accordionContent = header.nextElementSibling;
+                    if (accordionContent.style.maxHeight) {
+                        accordionContent.style.maxHeight = null;
+                    } else {
+                        accordionContent.style.maxHeight = accordionContent.scrollHeight + "px";
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>
+
+
+

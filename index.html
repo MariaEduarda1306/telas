@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistemas de Horas Compementares - SHC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="theme-default dotted-background layout-login">
+    <main class="login-card">
+        <div id="login-form-wrapper" class="form-wrapper">
+            <h1 class="logo-header">FMP <span>| SHC</span></h1>
+            <p class="login-title">Acesse sua conta</p>
+            <a href="dashboard administrador.html" class="login-title">ADM</a>
+            <a href="dashboard alunos.html" class="login-title">ALUNO</a>
+            <a href="dashboard coordenador.html" class="login-title">COORDENADOR</a>
+            <a href="dashboard secretaria.html" class="login-title">SECRETARIA</a>
+            
+            <form>
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <i class="fas fa-user prefix-icon"></i>
+                        <input type="text" id="user" placeholder="Usuário" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock prefix-icon"></i>
+                        <input type="password" id="password" placeholder="Senha" required>
+                        <i id="password-toggle" class="fas fa-eye-slash password-toggle"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn-full">Entrar</button>
+            </form>
+            <a id="first-access-link" class="link-action"><strong>É seu primeiro acesso?</strong> Veja como entrar.</a>
+            <a id="forgot-password-link" class="link-action">Esqueceu a senha?</a>
+        </div>
+        <div id="recovery-form-wrapper" class="form-wrapper hidden">
+            <h1 class="logo-header">FMP <span>| HORAS</span></h1>
+            <p class="login-title">Recuperar Senha</p>
+            <form id="recovery-form">
+                <div class="form-group">
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope prefix-icon"></i>
+                        <input type="email" id="recovery-email" placeholder="Email para recuperação" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn-full">Enviar Link</button>
+            </form>
+            <a id="back-to-login-link1" class="link-action">Voltar para o Login</a>
+        </div>
+        <div id="confirmation-wrapper" class="form-wrapper hidden">
+            <div class="confirmation-message">
+                <i class="fas fa-check-circle"></i>
+                <h1 class="logo-header">Verifique seu Email</h1>
+                <p class="login-title">Um link para redefinir sua senha foi enviado.</p>
+                <a id="back-to-login-link2" class="link-action">Voltar para o Login</a>
+            </div>
+        </div>
+
+        <dialog id="first-access-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Primeiro Acesso</h2>
+                <button id="close-modal-btn" class="close-btn" aria-label="Fechar">&times;</button>
+            </div>
+
+            <div class="modal-content-body">
+                <div class="modal-icon">
+                    <i class="fas fa-key"></i>
+                </div>
+                <p>Seu acesso ao sistema já foi criado. Utilize os dados abaixo para entrar:</p>
+
+                <div class="instruction-box">
+                    <label for="user">Usuário</label>
+                    <div class="credential-info">
+                        <span>Seu número de CPF (apenas números)</span>
+                    </div>
+                </div>
+
+                <div class="instruction-box">
+                    <label for="password">Senha</label>
+                    <div class="credential-info">
+                        <span>Sua data de nascimento (DDMMAAAA)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button id="confirm-close-btn" class="btn btn-primary">OK, entendi!</button>
+            </div>
+        </dialog>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginWrapper = document.getElementById('login-form-wrapper');
+            const recoveryWrapper = document.getElementById('recovery-form-wrapper');
+            const confirmationWrapper = document.getElementById('confirmation-wrapper');
+            const forgotPasswordLink = document.getElementById('forgot-password-link');
+            const recoveryForm = document.getElementById('recovery-form');
+            const backToLoginLink1 = document.getElementById('back-to-login-link1');
+            const backToLoginLink2 = document.getElementById('back-to-login-link2');
+            forgotPasswordLink.addEventListener('click', () => {
+                loginWrapper.classList.add('hidden');
+                recoveryWrapper.classList.remove('hidden');
+            });
+            recoveryForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                recoveryWrapper.classList.add('hidden');
+                confirmationWrapper.classList.remove('hidden');
+            });
+            const showLogin = () => {
+                recoveryWrapper.classList.add('hidden');
+                confirmationWrapper.classList.add('hidden');
+                loginWrapper.classList.remove('hidden');
+            };
+            backToLoginLink1.addEventListener('click', showLogin);
+            backToLoginLink2.addEventListener('click', showLogin);
+            const passwordInput = document.getElementById('password');
+            const passwordToggle = document.getElementById('password-toggle');
+            passwordToggle.addEventListener('click', () => {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    passwordToggle.classList.remove('fa-eye-slash');
+                    passwordToggle.classList.add('fa-eye');
+                } else {
+                    passwordInput.type = 'password';
+                    passwordToggle.classList.remove('fa-eye');
+                    passwordToggle.classList.add('fa-eye-slash');
+                }
+            });
+        });
+    
+            const firstAccessLink = document.getElementById('first-access-link');
+            const firstAccessModal = document.getElementById('first-access-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const confirmCloseBtn = document.getElementById('confirm-close-btn');
+
+            if (firstAccessLink && firstAccessModal) {
+                firstAccessLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    firstAccessModal.showModal();
+                });
+
+                closeModalBtn.addEventListener('click', () => {
+                    firstAccessModal.close();
+                });
+
+                confirmCloseBtn.addEventListener('click', () => {
+                    firstAccessModal.close();
+                });
+            }
+    </script>
+</body>
+</html>
+
+
+
+
+
