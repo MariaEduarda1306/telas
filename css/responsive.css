@@ -91,6 +91,10 @@ td::before {
     width: 100%;
 }
 
+dialog {
+    max-width: calc(100vw - 4rem); /* Garante margens de 2rem de cada lado */
+}
+
 /* === TABLETS E DESKTOPS PEQUENOS (>= 768px) === */
 @media (min-width: 768px) {
 
@@ -98,6 +102,8 @@ td::before {
     .header {
         padding: 2rem 4rem;
     }
+
+    dialog { padding: 3rem; }
 
     .page-header {
         flex-direction: row;
