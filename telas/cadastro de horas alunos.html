@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Horas - FMP</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        /* Estilo opcional para destacar campos com erro */
+        .input-error {
+            border: 1px solid var(--status-reprovado) !important;
+        }
+    </style>
+</head>
+<body class="theme-default">
+    <header class="header">
+        <a href="dashboard alunos.html" class="logout-btn"><i class="fas fa-chevron-circle-left"></i> Voltar</a>
+        <div class="logo">SHC</div>
+        <a href="index.html" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </header>
+
+    <main class="main-container form-container">
+        <div class="form-card">
+            <h1 class="form-title">Cadastro de Horas</h1>
+            <form id="cadastro-form">
+                <div class="form-group">
+                    <label for="tipo-atividade">Tipo de Atividade</label>
+                    <select id="tipo-atividade" name="tipo-atividade" required class="hidden-select">
+                        <option value="">Selecione um tipo...</option>
+                        <option value="curso">Curso</option>
+                        <option value="evento">Evento</option>
+                        <option value="estagio">Estágio</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                    <div class="custom-select-wrapper">
+                        <div class="custom-select-trigger">
+                            <span>Selecione um tipo...</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="custom-options">
+                            <div class="custom-option" data-value="curso">Curso</div>
+                            <div class="custom-option" data-value="evento">Evento</div>
+                            <div class="custom-option" data-value="estagio">Estágio</div>
+                            <div class="custom-option" data-value="outro">Outro</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="outro-tipo-group" class="form-group hidden">
+                    <label for="outro-tipo">Especifique o tipo</label>
+                    <input type="text" id="outro-tipo" name="outro-tipo">
+                </div>
+                
+                <div class="form-group">
+                    <label for="nome-atividade">Nome da Atividade</label>
+                    <input type="text" id="nome-atividade" name="nome-atividade" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="instituicao">Instituição</label>
+                    <input type="text" id="instituicao" name="instituicao" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="ano">Ano da Atividade</label>
+                    <select id="ano" name="ano" required class="hidden-select">
+                        </select>
+                    <div class="custom-select-wrapper">
+                        <div class="custom-select-trigger">
+                            <span></span> <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="custom-options">
+                            </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload do Comprovante</label>
+                    <label for="comprovante" class="file-upload-wrapper">
+                        <input type="file" id="comprovante" name="comprovante" accept=".pdf" required>
+                        <span class="file-upload-text">
+                            <i class="fas fa-upload"></i>
+                            Clique para escolher o arquivo (somente .pdf)
+                        </span>
+                        <span id="file-name"></span>
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- SELEÇÃO DOS ELEMENTOS DO FORMULÁRIO ---
+        const form = document.getElementById('cadastro-form');
+        const tipoAtividadeSelect = document.getElementById('tipo-atividade');
+        const outroTipoGroup = document.getElementById('outro-tipo-group');
+        const outroTipoInput = document.getElementById('outro-tipo');
+        const anoSelect = document.getElementById('ano');
+        const fileInput = document.getElementById('comprovante');
+        const fileUploadWrapper = document.querySelector('.file-upload-wrapper');
+        const fileUploadText = fileUploadWrapper.querySelector('.file-upload-text');
+        const fileNameSpan = document.getElementById('file-name');
+
+        // --- LÓGICA DOS SELECTS PERSONALIZADOS E CAMPO "OUTRO" ---
+        const anoAtual = new Date().getFullYear();
+        for (let ano = anoAtual; ano >= anoAtual - 10; ano--) {
+            const option = document.createElement('option');
+            option.value = ano;
+            option.textContent = ano;
+            anoSelect.appendChild(option);
+        }
+
+        function setupCustomSelect(wrapper) {
+            const trigger = wrapper.querySelector('.custom-select-trigger');
+            const optionsContainer = wrapper.querySelector('.custom-options');
+            const hiddenSelect = wrapper.previousElementSibling;
+            const triggerSpan = trigger.querySelector('span');
+
+            if (hiddenSelect.id === 'ano') {
+                optionsContainer.innerHTML = '';
+                Array.from(hiddenSelect.options).forEach(option => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.classList.add('custom-option');
+                    optionDiv.textContent = option.textContent;
+                    optionDiv.dataset.value = option.value;
+                    optionsContainer.appendChild(optionDiv);
+                });
+                triggerSpan.textContent = anoAtual;
+                hiddenSelect.value = anoAtual;
+            }
+
+            const options = optionsContainer.querySelectorAll('.custom-option');
+            trigger.addEventListener('click', () => wrapper.classList.toggle('open'));
+            options.forEach(option => {
+                option.addEventListener('click', () => {
+                    triggerSpan.textContent = option.textContent;
+                    hiddenSelect.value = option.dataset.value;
+                    hiddenSelect.dispatchEvent(new Event('change'));
+                    wrapper.classList.remove('open');
+                });
+            });
+        }
+
+        document.querySelectorAll('.custom-select-wrapper').forEach(setupCustomSelect);
+        
+        tipoAtividadeSelect.addEventListener('change', (event) => {
+            if (event.target.value === 'outro') {
+                outroTipoGroup.classList.remove('hidden');
+                outroTipoInput.required = true;
+            } else {
+                outroTipoGroup.classList.add('hidden');
+                outroTipoInput.required = false;
+                outroTipoInput.value = '';
+            }
+        });
+        
+        document.addEventListener('click', (e) => {
+            document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
+                if (!wrapper.contains(e.target)) wrapper.classList.remove('open');
+            });
+        });
+
+        // --- LÓGICA DE EXIBIÇÃO DO NOME DO ARQUIVO ---
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                const fileName = fileInput.files[0].name;
+                fileUploadText.style.display = 'none';
+                fileNameSpan.innerHTML = `<span class="label">Arquivo selecionado:</span><span class="name">${fileName}</span>`;
+            } else {
+                fileUploadText.style.display = 'block'; 
+                fileNameSpan.innerHTML = '';
+            }
+        });
+
+        // --- NOVA LÓGICA DE VALIDAÇÃO DO FORMULÁRIO ---
+        form.addEventListener('submit', (event) => {
+            // Remove erros antigos antes de validar de novo
+            document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+            
+            const errorMessages = [];
+            
+            // 1. Valida "Tipo de Atividade"
+            if (tipoAtividadeSelect.value === "") {
+                errorMessages.push('Por favor, selecione um Tipo de Atividade.');
+                tipoAtividadeSelect.nextElementSibling.classList.add('input-error');
+            }
+
+            // 2. Valida campo "Outro" se necessário
+            if (tipoAtividadeSelect.value === 'outro' && outroTipoInput.value.trim() === '') {
+                errorMessages.push('Por favor, especifique o tipo de atividade.');
+                outroTipoInput.classList.add('input-error');
+            }
+
+            // 3. Valida se um arquivo foi selecionado e se é PDF
+            const file = fileInput.files[0];
+            if (!file) {
+                // A validação 'required' do HTML já cuida disso, mas é uma segurança extra.
+                errorMessages.push('Por favor, envie o comprovante.');
+                fileUploadWrapper.classList.add('input-error');
+            } else if (!file.name.toLowerCase().endsWith('.pdf')) {
+                errorMessages.push('O arquivo do comprovante deve ser no formato PDF.');
+                fileUploadWrapper.classList.add('input-error');
+            }
+
+            // Se houver qualquer erro, impede o envio e mostra o alerta
+            if (errorMessages.length > 0) {
+                event.preventDefault(); // Impede o envio do formulário
+                alert('Por favor, corrija os seguintes erros:\n\n- ' + errorMessages.join('\n- '));
+            }
+        });
+    });
+</script>
+</body>
+</html>
