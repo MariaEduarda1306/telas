@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemas de Horas Compementares - SHC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="theme-default">
+    <header class="header">
+        <a href="dashboard coordenador.html" class="logout-btn"><i class="fas fa-chevron-circle-left"></i> Voltar</a>
+        <div class="logo">SHC</div>
+        <a href="index.html" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </header>
+
+    <main class="main-container">
+        <div id="student-list-view">
+            <h1 class="page-title"><i class="fas fa-check-double"></i> Validar Horas</h1>
+            <div id="filter-form" class="filter-bar">
+                <div class="filter-group">
+                    <label for="aluno">Nome do Aluno</label>
+                    <input type="text" id="aluno" name="aluno">
+                </div>
+                <div class="filter-group">
+                    <label for="matricula">Matrícula</label>
+                    <input type="text" id="matricula" name="matricula">
+                </div>
+                <div class="filter-group">
+                    <label for="fase">Fase</label>
+                    <select id="fase" name="fase" class="hidden-select">
+                        <option value="">Todas</option>
+                        <option value="3">3ª Fase</option>
+                    </select>
+                    <div class="custom-select-wrapper">
+                        <div class="custom-select-trigger">
+                            <span>Todas</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="custom-options">
+                            <div class="custom-option" data-value="">Todas</div>
+                            <div class="custom-option" data-value="3">3ª Fase</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="filter-buttons">
+                    <button id="clear-filters-btn" class="btn btn-secondary"><i class="fas fa-times"></i> Limpar</button>
+                    <button class="btn btn-primary"><i class="fas fa-filter"></i> Filtrar</button>
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Notificação</th><th>Nome do Aluno</th><th>Matrícula</th><th>Solicitações Pendentes</th></tr></thead>
+                    <tbody>
+                            <tr class="student-row" data-student-id="1">
+                                <td data-label="Notificação"><i class="fas fa-bell no-notification"></i></td>
+                                <td data-label="Nome do Aluno">Leonardo de Oliveira</td>
+                                <td data-label="Matrícula">20241001</td>
+                                <td data-label="Solicitações Pendentes">0</td>
+                            </tr>
+                            <tr class="student-row" data-student-id="2">
+                                <td data-label="Notificação"><i class="fas fa-bell notification-bell" title="Nova atividade para validar!"></i></td>
+                                <td data-label="Nome do Aluno">Maria Eduarda Schmidt</td>
+                                <td data-label="Matrícula">20241002</td>
+                                <td data-label="Solicitações Pendentes">1</td>
+                            </tr>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="student-detail-view" style="display: none;">
+            <div class="detail-header">
+                <button id="back-to-list-btn" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Voltar</button>
+                <h2 id="student-name-title" class="student-name"></h2>
+            </div>
+            <div id="accordion-placeholder" class="accordion-container"></div>
+        </div>
+    </main>
+
+    <script>
+        const studentsData = {
+             "1": {
+                name: "Leonardo de Oliveira",
+                requests: [
+                    { id: '2025001', title: 'Semana Acadêmica de TI', status: 'APROVADO', dataEnvio: '01/10/2025', horasSolicitadas: 20, obs: '--', pdfSrc: '' }
+                ]
+            },
+            "2": {
+                name: "Maria Eduarda Schmidt",
+                requests: [
+                    { id: '2025004', title: 'Curso de Python Avançado', status: 'ENTREGUE', dataEnvio: '29/09/2025', horasSolicitadas: 40, obs: 'Aguardando validação.', pdfSrc: '' }
+                ]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const listView = document.getElementById('student-list-view');
+            const detailView = document.getElementById('student-detail-view');
+            const backBtn = document.getElementById('back-to-list-btn');
+            const studentRows = document.querySelectorAll('.student-row');
+            const clearFiltersBtn = document.getElementById('clear-filters-btn');
+
+            function showDetailView(studentId) {
+                const student = studentsData[studentId];
+                if (!student) return;
+
+                document.getElementById('student-name-title').textContent = `Validar: ${student.name}`;
+                const accordionPlaceholder = document.getElementById('accordion-placeholder');
+                accordionPlaceholder.innerHTML = '';
+
+                student.requests.forEach(req => {
+                    buildAccordionItem(req, accordionPlaceholder);
+                });
+                
+                setupAccordion(student.requests, studentId);
+                listView.style.display = 'none';
+                detailView.style.display = 'block';
+            }
+            
+            function buildAccordionItem(req, container) {
+                let statusClass = '';
+                switch (req.status) {
+                    case 'APROVADO': statusClass = 'status-aprovado'; break; case 'REPROVADO': statusClass = 'status-reprovado'; break;
+                    case 'APROVADO COM RESSALVAS': statusClass = 'status-ressalva'; break; case 'ENTREGUE': statusClass = 'status-entregue'; break;
+                    case 'EM ANÁLISE': statusClass = 'status-analise'; break;
+                }
+                
+                let validationPanel = '';
+                if (req.status === 'EM ANÁLISE') {
+                    validationPanel = `
+                        <div class="validation-panel">
+                            <h4>Painel de Validação</h4>
+                            <div class="validation-inputs">
+                                <div class="filter-group">
+                                    <label for="horas-aprovadas-${req.id}">Horas Aprovadas</label>
+                                    <input type="number" id="horas-aprovadas-${req.id}" value="${req.horasSolicitadas}">
+                                </div>
+                                <div class="filter-group">
+                                    <label for="area-${req.id}">Área</label>
+                                    <select id="area-${req.id}">
+                                        <option value="">Selecione...</option>
+                                        <option value="sociocultural">Sociocultural</option>
+                                        <option value="profissional">Prática Profissional</option>
+                                        <option value="academica">Científico-Acadêmica</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <textarea placeholder="Adicionar observação..."></textarea>
+                            <div class="validation-actions">
+                                <button class="btn btn-danger"><i class="fas fa-times-circle"></i> Reprovar</button>
+                                <button class="btn btn-warning"><i class="fas fa-exclamation-triangle"></i> Aprovar com Ressalvas</button>
+                                <button class="btn btn-success"><i class="fas fa-check-circle"></i> Aprovar</button>
+                            </div>
+                        </div>`;
+                }
+                
+                const itemHTML = `<div class="accordion-item" data-request-id="${req.id}"><button class="accordion-header"><div class="header-title"><h3>${req.title}</h3></div><div class="header-status"><span class="status ${statusClass}">${req.status}</span><i class="fas fa-chevron-down accordion-icon"></i></div></button><div class="accordion-content"><div class="content-wrapper"><div class="details-list"><div class="detail-item"><span>ID:</span> <span>${req.id}</span></div><div class="detail-item"><span>Data de Envio:</span> <span>${req.dataEnvio}</span></div><div class="detail-item"><span>Horas Solicitadas:</span> <span>${req.horasSolicitadas}</span></div><div class="detail-item"><span>Observação:</span> <span>${req.obs}</span></div>${validationPanel}</div><div class="preview-section"><h4>Pré-visualização do Comprovante</h4><embed class="pdf-preview" src="${req.pdfSrc}" type="application/pdf" /></div></div></div></div>`;
+                container.innerHTML += itemHTML;
+            }
+
+            function setupAccordion(requests, studentId) {
+                const accordionHeaders = document.querySelectorAll('.accordion-header');
+                accordionHeaders.forEach(header => {
+                    header.addEventListener('click', () => {
+                        const item = header.closest('.accordion-item');
+                        const reqId = item.getAttribute('data-request-id');
+                        const req = requests.find(r => r.id === reqId);
+
+                        if (req && req.status === 'ENTREGUE') {
+                            req.status = 'EM ANÁLISE';
+                            showDetailView(studentId);
+                            setTimeout(() => {
+                                const newHeader = document.querySelector(`.accordion-item[data-request-id="${reqId}"] .accordion-header`);
+                                if (newHeader) newHeader.click();
+                            }, 50);
+                            return;
+                        }
+
+                        header.classList.toggle('active');
+                        const content = header.nextElementSibling;
+                        if (content.style.maxHeight) { content.style.maxHeight = null; } else { content.style.maxHeight = content.scrollHeight + 'px'; }
+                    });
+                });
+            }
+
+            studentRows.forEach(row => { row.addEventListener('click', () => { showDetailView(row.getAttribute('data-student-id')); }); });
+            backBtn.addEventListener('click', () => { detailView.style.display = 'none'; listView.style.display = 'block'; });
+            clearFiltersBtn.addEventListener('click', () => {
+                const form = document.getElementById('filter-form');
+                form.querySelectorAll('input, select').forEach(element => { element.value = ''; });
+            });
+        });
+
+            document.addEventListener('DOMContentLoaded', () => {
+                // Função para controlar os selects personalizados
+                function setupCustomSelect(wrapper) {
+                    const trigger = wrapper.querySelector('.custom-select-trigger');
+                    const optionsContainer = wrapper.querySelector('.custom-options');
+                    const hiddenSelect = wrapper.previousElementSibling;
+                    const triggerSpan = trigger.querySelector('span');
+                    const options = optionsContainer.querySelectorAll('.custom-option');
+
+                    trigger.addEventListener('click', () => {
+                        wrapper.classList.toggle('open');
+                    });
+
+                    options.forEach(option => {
+                        option.addEventListener('click', () => {
+                            triggerSpan.textContent = option.textContent;
+                            hiddenSelect.value = option.dataset.value;
+                            wrapper.classList.remove('open');
+                        });
+                    });
+                }
+
+                // Aplica a função a todos os selects personalizados da página
+                document.querySelectorAll('.custom-select-wrapper').forEach(setupCustomSelect);
+
+                // Fecha o dropdown se clicar fora
+                document.addEventListener('click', (e) => {
+                    document.querySelectorAll('.custom-select-wrapper').forEach(wrapper => {
+                        if (!wrapper.contains(e.target)) {
+                            wrapper.classList.remove('open');
+                        }
+                    });
+                });
+            });
+    </script>
+</body>
+
+</html>
+
+
+
