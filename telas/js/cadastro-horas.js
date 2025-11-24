@@ -72,6 +72,17 @@ document.addEventListener('DOMContentLoaded', () => {
         submitButton.disabled = true;
         submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
 
+        // --- NOVA VALIDAÇÃO MANUAL AQUI ---
+        const categoriaSelect = document.getElementById('categoria');
+        if (!categoriaSelect.value) {
+            showToast('Por favor, selecione uma categoria.', 'error');
+            
+            // Restaura o botão e para a execução
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalButtonText;
+            return;
+        }
+
         const formData = new FormData();
         
         // A doc pede 'categoria' no payload. Se o backend espera ID, o nome padrão Laravel é 'categoria_id'.
