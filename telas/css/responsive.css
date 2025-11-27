@@ -1,0 +1,193 @@
+/* ==========================================================================
+   responsive.css: Abordagem Mobile-First
+   - Estilos base são para telas pequenas (< 768px).
+   - Media queries com `min-width` adicionam complexidade para telas maiores.
+   ========================================================================== */
+
+/* === ESTILOS BASE (Mobile First: < 768px) === */
+
+/* Layout e Espaçamento */
+.main-container,
+.dashboard-container {
+    padding: 2rem; /* Espaçamento padrão para mobile */
+}
+
+.header {
+    padding: 1.5rem 2rem;
+}
+
+.header .logo {
+    font-size: 1.8rem;
+}
+
+.page-header,
+.modal-footer,
+.detail-item {
+    flex-direction: column; /* Itens empilhados por padrão */
+}
+
+.detail-item {
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+/* Tabela Responsiva (Estilo de Card por Padrão) */
+.table-container {
+    background: none;
+    border: none;
+}
+
+table {
+    white-space: normal;
+}
+
+thead {
+    display: none; /* Esconde cabeçalho em mobile */
+}
+
+tr {
+    display: block;
+    margin-bottom: 2rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 1.6rem;
+    padding: 2rem;
+}
+
+td {
+    display: block;
+    text-align: right;
+    padding: 1.2rem 0;
+    border-bottom: 1px dashed var(--glass-border);
+    position: relative;
+    padding-left: 14rem; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+td:last-child {
+    border-bottom: none;
+}
+
+td::before {
+    content: attr(data-label); /* Pega o texto do atributo data-label */
+    position: absolute;
+    left: 0;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.action-cell {
+    text-align: center;
+    padding-top: 1.5rem;
+}
+
+/* Modal de Primeiro Acesso em Mobile */
+#first-access-modal {
+    max-width: calc(100vw - 4rem);
+    box-sizing: border-box;
+    padding: 2rem;
+}
+
+#first-access-modal .modal-footer .btn {
+    width: 100%;
+}
+
+dialog {
+    max-width: calc(100vw - 4rem); /* Garante margens de 2rem de cada lado */
+}
+
+/* === TABLETS E DESKTOPS PEQUENOS (>= 768px) === */
+@media (min-width: 768px) {
+
+    /* Layout e Espaçamento */
+    .header { padding: 2rem 4rem; }
+    dialog { padding: 3rem; }
+
+    /* LÓGICA FINAL PARA O FILTRO EM DESKTOP */
+    .filter-bar {
+        flex-wrap: nowrap; /* Força a linha única */
+    }
+    .filter-buttons {
+        flex: 0 1 auto;      /* Impede que os botões cresçam */
+        margin-left: auto;   /* Empurra os botões para a direita */
+    }
+    .filter-group input, .filter-group select, .custom-select-trigger, .filter-buttons .btn {
+        height: 4.7rem;      /* Restaura a altura maior */
+        font-size: 1.6rem;   /* Restaura a fonte maior */
+    }
+    .filter-group label {
+        font-size: 1.4rem;   /* Restaura a fonte do label */
+    }
+    /* FIM DA LÓGICA DO FILTRO */
+
+    .page-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .summary-stats {
+        flex-direction: row;
+        width: auto;
+    }
+
+    .modal-footer {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .detail-item .value { text-align: right; }
+
+    .content-wrapper,
+    .form-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Fontes e Títulos */
+    .page-title, .form-title { font-size: 3.2rem; }
+    .header .logo { font-size: 2.2rem; }
+
+    /* Tabela volta ao formato tradicional */
+    table { white-space: nowrap; }
+    thead { display: table-header-group; }
+    tr {
+        display: table-row; margin: 0; border: none;
+        border-radius: 0; padding: 0; background: none;
+    }
+    td {
+        display: table-cell; text-align: left;
+        padding: 1.5rem 2rem; border-bottom: 1px solid var(--glass-border);
+        position: static;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    td::before { display: none; }
+    .action-cell { text-align: right; }
+}
+
+/* === DESKTOPS MÉDIOS (>= 1024px) === */
+@media (min-width: 1024px) {
+    .main-container,
+    .dashboard-container {
+        padding: 4rem;
+    }
+
+    .profile-card {
+        max-width: 800px;
+        margin: 4rem auto;
+    }
+}
+
+/* === DESKTOPS GRANDES (>= 1200px) - [NOVA SEÇÃO] === */
+@media (min-width: 1200px) {
+    .settings-grid {
+        grid-template-columns: repeat(2, 1fr); /* Layout de 2 colunas para as configurações */
+        gap: 3rem;
+        align-items: start;
+    }
+
+    .profile-card {
+        max-width: 900px; /* Aumenta um pouco mais o card de perfil */
+    }
+}
