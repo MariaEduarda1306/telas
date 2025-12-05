@@ -242,7 +242,7 @@ tbody tr:hover { background-color: var(--primary-glow-transparent); }
 .option-card:nth-child(4) { animation-delay: 0.4s; }
 .option-card:hover {
     transform: translateY(-1rem); border-color: var(--primary-glow);
-    box-shadow: 0 0 20px color-mix(in srgb, var(--primary-glow) 30%, transparent);
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
 }
 .option-card .icon {
     font-size: 4em; margin-bottom: 2rem; background: var(--primary-gradient);
@@ -801,4 +801,5 @@ input:-webkit-autofill:active {
         opacity: 0;
         transform: translateY(-20px);
     }
+
 }
