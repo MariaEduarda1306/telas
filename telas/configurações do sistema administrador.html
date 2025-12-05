@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistemas de Horas Complementares - SHC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body class="theme-admin">
+    <header class="header">
+        <a href="dashboard administrador.html" class="logout-btn"><i class="fas fa-chevron-circle-left"></i> Voltar</a>
+        <div class="logo">
+            <img src="logo.png" alt="Logo SHC" class="header-logo">
+        </div>
+        <a href="index.html" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+    </header>
+    
+    <main class="main-container">
+        <h1 class="page-title"><i class="fas fa-cogs"></i> Configurações do Sistema</h1>
+
+        <section class="settings-card" style="margin-bottom: 4rem;">
+            <div class="page-header" style="margin-bottom: 2rem;">
+                <h2 style="margin: 0;">Gerenciar Cursos</h2>
+                <button id="btn-add-course" class="btn btn-primary"><i class="fas fa-plus"></i> Novo Curso</button>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome do Curso</th>
+                            <th>Horas Necessárias</th>
+                            <th class="action-cell">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="courses-table-body">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="settings-card">
+            <div class="page-header" style="margin-bottom: 2rem;">
+                <h2 style="margin: 0;">Gerenciar Categorias</h2>
+                <button id="btn-add-category" class="btn btn-primary"><i class="fas fa-plus"></i> Nova Categoria</button>
+            </div>
+            
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome da Categoria</th>
+                            <th class="action-cell">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="categories-table-body">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="settings-card" style="margin-top: 4rem;">
+            <h3>Integrações Externas</h3>
+            <div class="form-group">
+                <label for="api-url">URL da API de Importação de Alunos</label>
+                <input type="text" id="api-url" placeholder="https://api.instituicao.com/v1/alunos">
+            </div>
+            <div class="form-group">
+                <label for="api-key">Chave da API (API Key)</label>
+                <input type="password" id="api-key" placeholder="**************">
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 20px;">
+                <button id="save-integrations-btn" class="btn btn-secondary"><i class="fas fa-save"></i> Salvar Integrações</button>
+            </div>
+        </section>
+    </main>
+
+    <dialog id="course-modal">
+        <div class="modal-header">
+            <h2 id="course-modal-title" class="modal-title">Adicionar Curso</h2>
+            <button class="close-btn" title="Fechar">&times;</button>
+        </div>
+        <form id="course-form" novalidate>
+            <input type="hidden" id="course-id">
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label for="course-name">Nome do Curso</label>
+                    <input type="text" id="course-name" required placeholder="Ex: Engenharia de Software">
+                </div>
+                <div class="form-group full-width">
+                    <label for="course-hours">Horas Necessárias</label>
+                    <input type="number" id="course-hours" required placeholder="Ex: 200">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-btn">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="category-modal">
+        <div class="modal-header">
+            <h2 id="category-modal-title" class="modal-title">Adicionar Categoria</h2>
+            <button class="close-btn" title="Fechar">&times;</button>
+        </div>
+        <form id="category-form" novalidate>
+            <input type="hidden" id="category-id">
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label for="category-name">Nome da Categoria</label>
+                    <input type="text" id="category-name" required placeholder="Ex: Palestra, Estágio, Monitoria...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary close-btn">Cancelar</button>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="delete-modal">
+        <div class="modal-header">
+            <h2 class="modal-title">Confirmar Exclusão</h2>
+            <button class="close-btn" title="Fechar">&times;</button>
+        </div>
+        <p>Tem certeza que deseja remover <strong id="delete-item-name"></strong>?</p>
+        <p style="font-size: 1.4rem; color: var(--status-reprovado);">Esta ação não pode ser desfeita e pode afetar alunos vinculados.</p>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary close-btn">Cancelar</button>
+            <button id="confirm-delete-btn" class="btn btn-danger">Confirmar Exclusão</button>
+        </div>
+    </dialog>
+
+    <script src="js/utils.js"></script>
+    <script src="js/configuracoes.js"></script>
+</body>
+</html>
