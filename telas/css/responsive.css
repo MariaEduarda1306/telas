@@ -1,0 +1,225 @@
+/* ==========================================================================
+   responsive.css: Abordagem Mobile-First
+   ========================================================================== */
+
+/* === ESTILOS BASE (Mobile First: < 768px) === */
+
+/* Layout e Espaçamento */
+.main-container,
+.dashboard-container {
+    padding: 2rem;
+}
+
+.header {
+    padding: 1.5rem 2rem;
+}
+
+.header .logo {
+    font-size: 1.8rem;
+}
+
+.page-header,
+.modal-footer,
+.detail-item {
+    flex-direction: column;
+}
+
+.detail-item {
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+/* Tabela Responsiva (Estilo de Card por Padrão) */
+.table-container {
+    background: none;
+    border: none;
+}
+
+table {
+    white-space: normal;
+}
+
+thead {
+    display: none;
+}
+
+tr {
+    display: block;
+    margin-bottom: 1.2rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 1.2rem;
+    padding: 1.2rem 1.6rem; 
+}
+
+td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+    padding: 1.2rem 0;
+    border-bottom: 1px dashed var(--glass-border);
+    position: static;
+    padding-left: 0;
+}
+
+td:last-child {
+    border-bottom: none;
+}
+
+td::before {
+    content: attr(data-label);
+    position: static; 
+    font-weight: 600;
+    color: var(--text-secondary);
+    flex: 0 0 auto;
+    margin-right: 2rem;
+    text-align: left;
+    max-width: 50%;
+}
+
+.action-cell {
+    text-align: center;
+    padding-top: 1.5rem;
+}
+
+/* Modal de Primeiro Acesso em Mobile */
+#first-access-modal {
+    max-width: calc(100vw - 4rem);
+    box-sizing: border-box;
+    padding: 2rem;
+}
+
+#first-access-modal .modal-footer .btn {
+    width: 100%;
+}
+
+dialog {
+    max-width: calc(100vw - 4rem);
+}
+
+/* === TABLETS E DESKTOPS PEQUENOS (>= 768px) === */
+@media (min-width: 768px) {
+
+    /* Layout e Espaçamento */
+    .header { padding: 2rem 4rem; }
+    dialog { padding: 3rem; }
+
+    .filter-bar {
+        flex-wrap: nowrap;
+    }
+    .filter-buttons {
+        flex: 0 1 auto;    
+        margin-left: auto;  
+    }
+    .filter-group input, .filter-group select, .custom-select-trigger, .filter-buttons .btn {
+        height: 4.7rem;
+        font-size: 1.6rem;   
+    }
+    .filter-group label {
+        font-size: 1.4rem;  
+    }
+
+    .page-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .summary-stats {
+        flex-direction: row;
+        width: auto;
+    }
+
+    .modal-footer {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    .detail-item .value { text-align: right; }
+
+    .content-wrapper,
+    .form-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Fontes e Títulos */
+    .page-title, .form-title { font-size: 3.2rem; }
+    .header .logo { font-size: 2.2rem; }
+
+    table { white-space: nowrap; }
+    thead { display: table-header-group; }
+    tr {
+        display: table-row; margin: 0; border: none;
+        border-radius: 0; padding: 0; background: none;
+    }
+    td {
+        display: table-cell; text-align: left;
+        padding: 1.5rem 2rem; border-bottom: 1px solid var(--glass-border);
+        position: static;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    td::before { display: none; }
+    .action-cell { text-align: right; }
+    
+    #first-access-modal,
+    #password-reset-modal {
+        max-width: 45rem; 
+        overflow: hidden;
+        padding: 2rem 3rem; 
+        margin: auto;
+    }
+
+    #first-access-modal .modal-icon,
+    #password-reset-modal .modal-icon {
+        font-size: 3.5rem;
+        margin-bottom: 1rem;
+    }
+
+    #first-access-modal p,
+    #password-reset-modal p {
+        margin-bottom: 2rem;
+    }
+
+    #first-access-modal .instruction-box,
+    #password-reset-modal .instruction-box {
+        margin-bottom: 1.5rem;
+    }
+    
+    #first-access-modal .modal-footer,
+    #password-reset-modal .modal-footer {
+        margin-top: 3rem;
+        justify-content: center; 
+    }
+    
+    #first-access-modal .modal-footer .btn,
+    #password-reset-modal .modal-footer .btn {
+        width: 100%;
+    }
+}
+
+/* === DESKTOPS MÉDIOS (>= 1024px) === */
+@media (min-width: 1024px) {
+    .main-container,
+    .dashboard-container {
+        padding: 4rem;
+    }
+
+    .profile-card {
+        max-width: 800px;
+        margin: 4rem auto;
+    }
+}
+
+/* === DESKTOPS GRANDES (>= 1200px) - [NOVA SEÇÃO] === */
+@media (min-width: 1200px) {
+    .settings-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 3rem;
+        align-items: start;
+    }
+
+    .profile-card {
+        max-width: 900px;
+    }
+}
